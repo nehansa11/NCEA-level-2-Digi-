@@ -1,0 +1,22 @@
+
+:root {
+  --teal: #74c6ce;
+  --teal-dark: #2c7e86;
+  --teal-soft: #e2f2f4;
+  --coral: #ef6c63;
+  --coral-dark: #bd4f48;
+  --coral-soft: #fff1ef;
+  --green-soft: #eef2df;
+  --blue-soft: #e3ebf5;
+  --pink-soft: #fbeceb;
+  --gold-soft: #fff5d7;
+  --ink: #24333a;
+  --muted: #66747b;
+  --line: #dfe7e9;
+  --surface: #ffffff;
+  --page: #f8fbfb;
+  --shadow: 0 10px 28px rgba(34, 61, 68, 0.09);
+  --radius: 22px;
+  --radius-small: 14px;
+  --nav-height: 88px;
+}
