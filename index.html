@@ -4,10 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#75c4cb">
-  <title>Home | Aotearoa Support Near Me</title>
+  <title>Home Aotearoa Support Near Me</title>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body>
-  
+<body data-page="home">
+  <header id="app-header"></header>
+
+  <main class="app-main home-main">
+    <div id="privacy-banner"></div>
+
+    <div class="home-message">
+      <h1 data-i18n="home.title">Find free help and resources in your community</h1>
+      <p data-i18n="home.subtitle">Free help, near you</p>
+    </div>
+
+    <div class="home-find-block">
+      <button id="find-help-button" class="primary-cta" type="button">
+        <img class="icon" src="assets/icons/search.svg" alt="Search">
+        <span data-i18n="home.findHelp">Find help now</span>
+      </button>
+    </div>
+
+    <div class="home-categories-block">
+      <div id="home-categories" class="category-grid" aria-live="polite"></div>
+    </div>
+
+    <a class="home-urgent-cta" href="urgent.html">
+      <img class="icon" src="assets/icons/alert.svg" alt="">
+      <span data-i18n="home.urgentCta">Need urgent help right now?  Urgent ↓</span>
+    </a>
+  </main>
+
+  <nav id="bottom-navigation"></nav>
+  <script type="module" src="assets/js/home.js"></script>
 </body>
 </html>

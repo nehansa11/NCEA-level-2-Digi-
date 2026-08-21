@@ -4,10 +4,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#74c7cd">
-  <title>Urgent | Aotearoa Support Near Me</title>
+  <title>Urgent Aotearoa Support Near Me</title>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body>
-  
+<body data-page="urgent">
+  <header id="app-header"></header>
+  <main class="app-main urgent-page">
+    <div id="privacy-banner"></div>
+
+    <p class="urgent-intro" data-i18n="urgent.freeServices">
+      These services are free. You don't need to explain why you're calling.
+    </p>
+
+    <div class="urgent-call-card">
+      <div class="urgent-call-title">
+        <img class="icon" src="assets/icons/phone.svg" alt="">
+        <strong data-i18n="urgent.callLifeline">Call Lifeline - free 24/7</strong>
+      </div>
+      <a class="urgent-main-number" href="tel:0800543354">0800 543 354</a>
+      <p data-i18n="urgent.freeNoReferral">Free · No referral · Any time</p>
+    </div>
+
+    <div class="urgent-contact-list">
+      <article class="urgent-contact-card">
+        <div class="urgent-category-icon housing-icon">
+          <img class="icon" src="assets/icons/housing.svg" alt="">
+        </div>
+        <div class="urgent-contact-copy">
+          <h1 data-i18n="urgent.housing">Emergency housing</h2>
+          <a href="tel:0508754163">0508 754 163</a>
+          <p>Kāinga Ora · call any time</p>
+        </div>
+        <a class="urgent-phone-link" href="tel:0508754163">
+          <img class="icon" src="assets/icons/phone.svg" alt="">
+        </a>
+      </article>
+
+      <article class="urgent-contact-card">
+        <div class="urgent-category-icon food-icon">
+          <img class="icon" src="assets/icons/food.svg" alt="">
+        </div>
+        <div class="urgent-contact-copy">
+          <h1 data-i18n="urgent.findFoodBank">Find a food bank</h2>
+          <a href="tel:093039200">09 303 9200</a>
+          <p>Auckland City Mission · no referral</p>
+        </div>
+        <a class="urgent-phone-link" href="tel:093039200">
+          <img class="icon" src="assets/icons/phone.svg" alt="">
+        </a>
+      </article>
+    </div>
+  </main>
+  <nav id="bottom-navigation"></nav>
+  <script type="module" src="assets/js/urgent.js"></script>
 </body>
 </html>

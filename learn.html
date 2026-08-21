@@ -4,10 +4,48 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#74c7cd">
-  <title>Learn | Aotearoa Support Near Me</title>
+  <title>Learn Aotearoa Support Near Me</title>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body>
-  
+<body data-page="learn">
+  <header id="app-header"></header>
+  <main class="app-main">
+    <div id="privacy-banner"></div>
+<div class="quiz-card" id="quiz-start-card">
+  <div>
+    <h1 data-i18n="learn.quizTitle">What support might help?</h1>
+    <p data-i18n="learn.quizText">Test what you know with six simple questions.</p>
+    <button id="start-quiz-button" class="quiz-start-button" type="button" data-i18n="learn.startQuiz">
+      Start quiz
+    </button>
+  </div>
+</div>
+
+<div id="quiz-panel" class="quiz-panel" hidden>
+  <div class="quiz-progress-row">
+    <strong id="quiz-progress"></strong>
+    <button id="close-quiz-button" class="quiz-close-button" type="button" data-i18n="learn.closeQuiz">
+      Close
+    </button>
+  </div>
+
+  <div id="quiz-question-area"></div>
+
+  <div id="quiz-result" class="quiz-result" hidden>
+    <h1 data-i18n="learn.quizComplete">Quiz complete</h1>
+    <p id="quiz-score"></p>
+    <button id="restart-quiz-button" class="quiz-start-button" type="button" data-i18n="learn.tryAgain">
+      Try again
+    </button>
+  </div>
+</div>
+
+<div class="div-block">
+  <div id="learn-accordion" class="learn-accordion"></div>
+</div>
+
+  </main>
+  <nav id="bottom-navigation"></nav>
+  <script type="module" src="assets/js/learn.js"></script>
 </body>
 </html>

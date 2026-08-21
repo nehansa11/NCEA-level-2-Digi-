@@ -4,10 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#74c7cd">
-  <title>Find | Aotearoa Support Near Me</title>
+  <title>Find Aotearoa Support Near Me</title>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body>
-  
+<body data-page="find">
+  <header id="app-header"></header>
+  <main class="app-main">
+    <div id="privacy-banner"></div>
+<div class="search-panel">
+  <label class="search-box" for="service-search">
+    <img class="icon" src="assets/icons/search.svg" alt="">
+    <input id="service-search" type="search" autocomplete="off" data-i18n-placeholder="find.searchPlaceholder" placeholder="Search services...">
+  </label>
+</div>
+<p id="find-location-status" class="location-status-inline" aria-live="polite"></p>
+
+<div>
+  <div id="find-category-filters" class="chip-row"></div>
+</div>
+
+<div class="div-block">
+  <div class="result-count-row">
+    <span id="find-result-count" class="result-count"></span>
+  </div>
+  <div id="find-service-list" class="service-list" aria-live="polite"></div>
+</div>
+
+  </main>
+  <nav id="bottom-navigation"></nav>
+  <script type="module" src="assets/js/find.js"></script>
 </body>
 </html>

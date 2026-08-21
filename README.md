@@ -1,6 +1,6 @@
 # Aotearoa Support Near Me
 
-NCEA Level 2 Digital Technology project by Nehansa Wijewardana using simple HTML, CSS and JavaScript modules. This app is mobile first.
+High-school project using simple HTML, CSS and JavaScript modules.
 
 ## Main categories
 The app uses only four service categories:
@@ -9,15 +9,23 @@ The app uses only four service categories:
 - Budgeting
 - Counselling
 
-All the service data is stored in assets/data/services.json file. When there is more service locations to add, please add then in the same json file and follow the same format.
+The service data is stored in `assets/data/services.json`. Each service has one `Category`; there is no `categories` array.
 
 ## Pages
 - Home
 - Find
 - Map
-- Learn
+- Learn + 6-question quiz
 - Urgent
 
-## How to run this App
-Use a small local web server because the app loads services.json with fetch(). For example:
+## Icons
+Icons are separate SVG files in `assets/icons/`, so they can be replaced easily without an icon library.
 
+## Run
+Use a small local web server because the app loads `services.json` with `fetch()`. For example:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000/`.
