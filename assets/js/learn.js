@@ -4,77 +4,41 @@ import { learnTopics } from "./translations.js";
 /*
   Manage Quizq Questions
 
-  Here I can add more question and answers
+  Here we can add more question and answers
   Each question has two answers.
   We can set the correctAnswer for each question separately. 0 is the first element and 1 is the 1st element.
   It also support english and maory languages
 */
 const quizQuestions = [
-  {
-    question: {
-      en: "Are the services in this app free or low cost?",
-      mi: "He kore utu, he utu iti rānei ngā ratonga o tēnei taupānga?"
-    },
-    answers: {
-      en: ["Yes", "No"],
-      mi: ["Āe", "Kāo"]
-    },
-    correctAnswer: 0
+   {
+    question: { en: "Many community organisations offer their support for free.", mi: "" }, // TODO: get checked
+    answers: { en: ["Yes", "No"], mi: ["Āe", "Kāo"] },
+    correctAnswer: 0,
   },
   {
-    question: {
-      en: "Can you search for a service by its category?",
-      mi: "Ka taea te rapu ratonga mā tōna kāwai?"
-    },
-    answers: {
-      en: ["Yes", "No"],
-      mi: ["Āe", "Kāo"]
-    },
-    correctAnswer: 0
+    question: { en: "About 1 in 7 New Zealand children currently live in material hardship.", mi: "" },
+    answers: { en: ["Yes", "No"], mi: ["Āe", "Kāo"] },
+    correctAnswer: 0,
   },
   {
-    question: {
-      en: "Does the app require you to create an account?",
-      mi: "Me hanga pūkete koe hei whakamahi i te taupānga?"
-    },
-    answers: {
-      en: ["Yes", "No"],
-      mi: ["Āe", "Kāo"]
-    },
-    correctAnswer: 1
+    question: { en: "Housing pressure only affects a family's money, not things like study or work.", mi: "" },
+    answers: { en: ["Yes", "No"], mi: ["Āe", "Kāo"] },
+    correctAnswer: 1,
   },
   {
-    question: {
-      en: "Can the Find page show services nearest to you?",
-      mi: "Ka taea e te whārangi Kimihia te whakaatu i ngā ratonga tata rawa?"
-    },
-    answers: {
-      en: ["Yes, when location is shared", "No"],
-      mi: ["Āe, ina tiria te tauwāhi", "Kāo"]
-    },
-    correctAnswer: 0
+    question: { en: "Talking to a budgeting advisor about your situation is kept confidential.", mi: "" },
+    answers: { en: ["Yes", "No"], mi: ["Āe", "Kāo"] },
+    correctAnswer: 0,
   },
   {
-    question: {
-      en: "Can you call a service by selecting its phone button?",
-      mi: "Ka taea te waea ratonga mā te pātene waea?"
-    },
-    answers: {
-      en: ["Yes", "No"],
-      mi: ["Āe", "Kāo"]
-    },
-    correctAnswer: 0
+    question: { en: "Poverty can affect a child's health and learning, not just their family's finances.", mi: "" },
+    answers: { en: ["Yes", "No"], mi: ["Āe", "Kāo"] },
+    correctAnswer: 0,
   },
   {
-    question: {
-      en: "Should you call 111 when there is immediate danger?",
-      mi: "Me waea ki 111 mēnā he mōrearea tonu?"
-    },
-    answers: {
-      en: ["Yes", "No"],
-      mi: ["Āe", "Kāo"]
-    },
-    correctAnswer: 0
+    question: { en: "You always need a referral before contacting a food bank or community support service.", mi: "" },
+    answers: { en: ["Yes", "No"], mi: ["Āe", "Kāo"] },
+    correctAnswer: 1,
   }
 ];
 

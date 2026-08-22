@@ -74,6 +74,7 @@ function renderHeader() {
         <div>${t("app.nameLine2")}</div>
       </div>
       <div class="header-actions">
+      <div class="top-row">
         <a class="urgent-link" href="urgent.html">
           ${icon("alert")}
           <span>${t("header.urgent")}</span>
@@ -82,6 +83,9 @@ function renderHeader() {
           ${currentLanguage === "en" ? "MI" : "EN"}
         </button>
       </div>
+
+      <span class="language-hint">Switch Language</span>
+    </div>
     </div>
   `;
 
