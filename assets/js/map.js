@@ -27,8 +27,8 @@ function loadGoogleMaps() {
       return;
     }
 
-    if (!APP_CONFIG.googleMapsApiKey || APP_CONFIG.googleMapsApiKey === "YOUR_GOOGLE_MAPS_API_KEY") {
-      reject(new Error("Add a restricted Google Maps browser key in assets/js/config.js."));
+    if (!APP_CONFIG.googleMapsApiKey) {
+      reject(new Error("Google Maps API key required."));
       return;
     }
 
@@ -42,7 +42,7 @@ function loadGoogleMaps() {
     script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(APP_CONFIG.googleMapsApiKey)}&callback=${callbackName}`;
     script.async = true;
     script.defer = true;
-    script.onerror = () => reject(new Error("Google Maps could not be loaded."));
+    script.onerror = () => reject(new Error("Error loading Google Maps."));
     document.head.appendChild(script);
   });
 }
@@ -197,17 +197,6 @@ async function start() {
   await initialiseMap();
 
   requestLocation();
-
-  document.getElementById("map-service-list").addEventListener("click", (event) => {
-    if (event.target.closest("[data-location-request]")) {
-      requestLocation();
-    }
-  });
-
-  document.getElementById("scroll-to-list").addEventListener("click", () => {
-    document.getElementById("map-results-section").scrollIntoView({ behavior: "smooth" });
-  });
-
 
   document.addEventListener("languagechange", () => {
     renderFilters();

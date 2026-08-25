@@ -1,13 +1,7 @@
 import { initializePage, icon, getLanguage, t } from "./common.js";
 import { learnTopics } from "./translations.js";
 
-/*
-  Manage Quizq Questions
-  Here I can add more question and answers
-  Each question has two answers.
-  We can set the correctAnswer for each question separately. 0 is the first element and 1 is the 1st element.
-  It also support english and maory languages
-*/
+
 const quizQuestions = [
    {
     question: { en: "Many community organisations offer their support for free.", mi: "" }, // TODO: get checked

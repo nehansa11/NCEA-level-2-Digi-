@@ -7,6 +7,4 @@ export const APP_CONFIG = {
 
   defaultMapCenter: { lat: -41.0, lng: 174.8 },
   defaultMapZoom: 5,
-
-  reportEmail: "nehansawijewardana@gmail.com"
 };

@@ -1,14 +1,13 @@
 import { icon, t } from "./common.js";
 import { APP_CONFIG } from "./config.js";
 
-// Keep the category list simple for the school project.
 export const MAIN_CATEGORIES = ["Food", "Housing", "Budgeting", "Counselling"];
 
 export async function loadServices() {
   const response = await fetch("assets/data/services.json");
 
   if (!response.ok) {
-    throw new Error("Could not load services data.");
+    throw new Error("Could not load services data file.");
   }
 
   const services = await response.json();
@@ -19,7 +18,7 @@ export async function loadServices() {
     Category: MAIN_CATEGORIES.includes(service.Category) ? service.Category : "Counselling",
     lat: Number(service.lat),
     lng: Number(service.lng),
-    "Last Updated": service["Last Updated"] || "28 Mar 2024"
+    "Last Updated": ""
   }));
 }
 
@@ -98,18 +97,10 @@ export function createServiceCard(service, distanceKm) {
   const category = service.Category || "Counselling";
   const phone = service.Phone || "";
   const tel = toTel(phone);
-  const lastUpdated = service["Last Updated"] || "28 Mar 2024";
-
-  const reportSubject = encodeURIComponent(
-    `Outdated service information: ${service["Organisation Name"]}`
-  );
-
-  const reportBody = encodeURIComponent(
-    `Please review this service:\n\n${service["Organisation Name"]}\n${service.Address || ""}`
-  );
+  const lastUpdated = "";
 
   const reportHref =
-    `mailto:${APP_CONFIG.reportEmail}?subject=${reportSubject}&body=${reportBody}`;
+    `mailto:nehansawijewardana@gmail.com?subject=Report outdated services`;
 
   return `
     <article class="service-card" id="card-${service.id}" data-service-id="${service.id}">
