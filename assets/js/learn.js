@@ -3,8 +3,7 @@ import { learnTopics } from "./translations.js";
 
 /*
   Manage Quizq Questions
-
-  Here we can add more question and answers
+  Here I can add more question and answers
   Each question has two answers.
   We can set the correctAnswer for each question separately. 0 is the first element and 1 is the 1st element.
   It also support english and maory languages
