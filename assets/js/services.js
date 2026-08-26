@@ -168,7 +168,7 @@ export function info_content(service, distanceKm) {
 }
 
 //Convert to html friendly charactors
-export function convert_to_html(value) {
+function convert_to_html(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")

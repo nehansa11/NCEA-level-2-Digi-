@@ -9,7 +9,7 @@ import {
   app_service_card,
   info_content
 } from "./services.js";
-import { browser_location, attach_distances, sortByDistance } from "./location.js";
+import { browser_location, attach_distances, sort_by_distance } from "./location.js";
 
 let allServices = [];
 let selectedCategory = new URLSearchParams(window.location.search).get("category") || "all";
@@ -72,7 +72,7 @@ function display_filters() {
 
 function get_visible_services() {
   let services = search_filter_services(allServices, "", selectedCategory);
-  if (userLocation) services = sortByDistance(attach_distances(services, userLocation));
+  if (userLocation) services = sort_by_distance(attach_distances(services, userLocation));
   return services;
 }
 

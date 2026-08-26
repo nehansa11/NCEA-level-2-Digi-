@@ -62,7 +62,7 @@ export function attach_distances(services, userLocation) {
 }
 
 //@TODO DEL
-export function sortByDistance(services) {
+export function sort_by_distance(services) {
   return [...services].sort((a, b) => {
     const aDistance = Number.isFinite(a.distanceKm) ? a.distanceKm : Number.POSITIVE_INFINITY;
     const bDistance = Number.isFinite(b.distanceKm) ? b.distanceKm : Number.POSITIVE_INFINITY;

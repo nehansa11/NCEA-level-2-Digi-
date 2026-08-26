@@ -2,7 +2,7 @@
 import { setup_page, _translate, display_result_count_text } from "./common.js";
 import { load_json_services, get_app_main_categories, get_main_cat_icon, display_cat_translated_label, search_filter_services, app_service_card } from "./services.js";
 import { geticon } from "./common.js";
-import { browser_location, attach_distances, sortByDistance } from "./location.js";
+import { browser_location, attach_distances, sort_by_distance } from "./location.js";
 
 let allServices = [];
 let selectedCategory = new URLSearchParams(window.location.search).get("category") || "all";
@@ -32,16 +32,16 @@ function display_filters() {
       else url.searchParams.set("category", selectedCategory);
       history.replaceState({}, "", url);
       display_filters();
-      renderResults();
+      display_results();
     });
   });
 }
 function getVisibleServices() {
   let services = search_filter_services(allServices, query, selectedCategory);
-  if (userLocation) services = sortByDistance(attach_distances(services, userLocation));
+  if (userLocation) services = sort_by_distance(attach_distances(services, userLocation));
   return services;
 }
-function renderResults() {
+function display_results() {
   const services = getVisibleServices();
   document.getElementById("find-result-count").textContent = display_result_count_text(services.length);
 
@@ -62,18 +62,18 @@ async function request_user_location() {
       error.message === "DENIED" ? _translate("location.denied") : _translate("location.unavailable");
   }
 
-  renderResults();
+  display_results();
 }
 
 async function start() {
   await setup_page();
   allServices = await load_json_services();
   display_filters();
-  renderResults();
+  display_results();
 
   document.getElementById("service-search").addEventListener("input", (event) => {
     query = event.target.value;
-    renderResults();
+    display_results();
   });
 
   request_user_location();
@@ -86,7 +86,7 @@ async function start() {
 
   document.addEventListener("languagechange", () => {
     display_filters();
-    renderResults();
+    display_results();
   });
 }
 
