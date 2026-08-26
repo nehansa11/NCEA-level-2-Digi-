@@ -1,14 +1,14 @@
-import { setup_page, geticon } from "./common.js";
-import { get_app_main_categories, get_main_cat_icon, display_cat_translated_label } from "./services.js";
+import { setup_page, getIcon } from "./common.js";
+import { getAppMainCategories, getMainCatIcon, displayCatTranslatedLabel } from "./services.js";
 
 function showCategories() {
   const container = document.getElementById("home-categories");
-  const categories = get_app_main_categories();
+  const categories = getAppMainCategories();
 
   container.innerHTML = categories.map((category) => `
     <button class="category-tile" type="button" data-category="${encodeURIComponent(category)}">
-      ${geticon(get_main_cat_icon(category))}
-      <strong>${display_cat_translated_label(category)}</strong>
+      ${getIcon(getMainCatIcon(category))}
+      <strong>${displayCatTranslatedLabel(category)}</strong>
     </button>
   `).join("");
 

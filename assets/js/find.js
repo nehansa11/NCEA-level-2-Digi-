@@ -1,15 +1,15 @@
 
-import { setup_page, _translate, display_result_count_text } from "./common.js";
-import { load_json_services, get_app_main_categories, get_main_cat_icon, display_cat_translated_label, search_filter_services, app_service_card } from "./services.js";
-import { geticon } from "./common.js";
-import { browser_location, attach_distances, sort_by_distance } from "./location.js";
+import { setup_page, _translate, displayResultCountText } from "./common.js";
+import { loadJsonServices, getAppMainCategories, getMainCatIcon, displayCatTranslatedLabel, searchFilterServices, appServiceCard } from "./services.js";
+import { getIcon } from "./common.js";
+import { browserLocation, attachDistances, sortByDistance } from "./location.js";
 
 let allServices = [];
 let selectedCategory = new URLSearchParams(window.location.search).get("category") || "all";
 let query = "";
 let userLocation = null;
-function display_filters() {
-  const categories = get_app_main_categories();
+function displayFilters() {
+  const categories = getAppMainCategories();
   const container = document.getElementById("find-category-filters");
 
   container.innerHTML = [
@@ -18,8 +18,8 @@ function display_filters() {
       <button class="filter-chip category-filter-${category.toLowerCase()} ${selectedCategory.toLowerCase() === category.toLowerCase() ? "active" : ""}"
               type="button"
               data-category="${encodeURIComponent(category)}">
-        ${geticon(get_main_cat_icon(category))}
-        <span>${display_cat_translated_label(category)}</span>
+        ${getIcon(getMainCatIcon(category))}
+        <span>${displayCatTranslatedLabel(category)}</span>
       </button>
     `)
   ].join("");
@@ -31,62 +31,62 @@ function display_filters() {
       if (selectedCategory === "all") url.searchParams.delete("category");
       else url.searchParams.set("category", selectedCategory);
       history.replaceState({}, "", url);
-      display_filters();
-      display_results();
+      displayFilters();
+      displayResults();
     });
   });
 }
 function getVisibleServices() {
-  let services = search_filter_services(allServices, query, selectedCategory);
-  if (userLocation) services = sort_by_distance(attach_distances(services, userLocation));
+  let services = searchFilterServices(allServices, query, selectedCategory);
+  if (userLocation) services = sortByDistance(attachDistances(services, userLocation));
   return services;
 }
-function display_results() {
+function displayResults() {
   const services = getVisibleServices();
-  document.getElementById("find-result-count").textContent = display_result_count_text(services.length);
+  document.getElementById("find-result-count").textContent = displayResultCountText(services.length);
 
   document.getElementById("find-service-list").innerHTML = services.length
-    ? services.map((service) => app_service_card(service, service.distanceKm)).join("")
+    ? services.map((service) => appServiceCard(service, service.distanceKm)).join("")
     : `<div class="empty-state">${_translate("results.none")}</div>`;
 }
 
-async function request_user_location() {
+async function requestUserLocation() {
   const status = document.getElementById("find-location-status");
   status.textContent = _translate("location.requesting");
 
   try {
-    userLocation = await browser_location();
+    userLocation = await browserLocation();
     status.textContent = _translate("location.allowed");
   } catch (error) {
     status.textContent =
       error.message === "DENIED" ? _translate("location.denied") : _translate("location.unavailable");
   }
 
-  display_results();
+  displayResults();
 }
 
 async function start() {
   await setup_page();
-  allServices = await load_json_services();
-  display_filters();
-  display_results();
+  allServices = await loadJsonServices();
+  displayFilters();
+  displayResults();
 
   document.getElementById("service-search").addEventListener("input", (event) => {
     query = event.target.value;
-    display_results();
+    displayResults();
   });
 
-  request_user_location();
+  requestUserLocation();
 
   document.getElementById("find-service-list").addEventListener("click", (event) => {
     if (event.target.closest("[data-location-request]")) {
-      request_user_location();
+      requestUserLocation();
     }
   });
 
   document.addEventListener("languagechange", () => {
-    display_filters();
-    display_results();
+    displayFilters();
+    displayResults();
   });
 }
 

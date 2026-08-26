@@ -11,7 +11,7 @@ const mypages = {
 };
 
 //Bottom navigation/button item list
-const navigation_items = [
+const navigationItems = [
   { key: "home", href: "index.html", icon: "home" },
   { key: "map", href: "map.html", icon: "map" },
   { key: "learn", href: "learn.html", icon: "learn" },
@@ -24,12 +24,12 @@ let current_lang = localStorage.getItem("appLanguage") || "en";
 if (!translations[current_lang]) current_lang = "en";//setting default language as en
 
 //general function to used to get the icon by name
-export function geticon(name, className = "icon") {
+export function getIcon(name, className = "icon") {
   return `<img class="${className}" src="assets/icons/${name}.svg" alt="${name}">`;
 }
 
 //general function to get the language
-export function getlanguage() {
+export function getLanguage() {
   return current_lang;
 }
 
@@ -43,18 +43,18 @@ export function _translate(key, replacements = {}) {
 }
 
 //general function to set the selected language from the header
-export function set_language(language) {
+export function setLanguage(language) {
   if (!translations[language]) return;
   current_lang = language;
   localStorage.setItem("appLanguage", language);
   document.documentElement.lang = language === "mi" ? "mi" : "en";
-  apply_translations();
-  display_common_sections();
+  applyTranslations();
+  displayCommonSections();
   document.dispatchEvent(new CustomEvent("languagechange", { detail: { language } }));
 }
 
 //using translation in the js apply translation to all document
-export function apply_translations(root = document) {
+export function applyTranslations(root = document) {
   root.querySelectorAll("[data-i18n]").forEach((element) => {
     element.textContent = _translate(element.dataset.i18n);
   });
@@ -65,7 +65,7 @@ export function apply_translations(root = document) {
 }
 
 //Display common header
-function display_common_header() {
+function displayCommonHeader() {
   const page = document.body.dataset.page || "home";
   const config = mypages[page] || mypages.home;
   const header = document.getElementById("app-header");
@@ -74,7 +74,7 @@ function display_common_header() {
   header.innerHTML = `
     <div class="header-inner">
       <div class="page-identity">
-        ${geticon(config.icon)}
+        ${getIcon(config.icon)}
         <span>${_translate(`page.${page}`)}</span>
       </div>
       <div class="brand">
@@ -84,7 +84,7 @@ function display_common_header() {
       <div class="header-actions">
       <div class="top-row">
         <a class="urgent-link" href="urgent.html">
-          ${geticon("alert")}
+          ${getIcon("alert")}
           <span>${_translate("header.urgent")}</span>
         </a>
         <button class="language-button" id="language-toggle" type="button" title="Change language">
@@ -98,17 +98,17 @@ function display_common_header() {
   `;
 
   document.getElementById("language-toggle")?.addEventListener("click", () => {
-    set_language(current_lang === "en" ? "mi" : "en");
+    setLanguage(current_lang === "en" ? "mi" : "en");
   });
 }
 
 //Display common privacy banner
-function display_privacy_banner() {
+function displayPrivacyBanner() {
   const container = document.getElementById("privacy-banner");
   if (!container) return;
   container.innerHTML = `
     <div class="privacy-banner" role="note">
-      ${geticon("shield")}
+      ${getIcon("shield")}
       <span>${_translate("privacy.anonymous")}</span>
       <span>${_translate("privacy.noLogin")}</span>
       <span>${_translate("privacy.noTracking")}</span>
@@ -117,18 +117,18 @@ function display_privacy_banner() {
 }
 
 //Display common navigation
-function display_navigation() {
+function displayNavigation() {
   const page = document.body.dataset.page || "home";
   const nav = document.getElementById("bottom-navigation");
   if (!nav) return;
 
   nav.innerHTML = `
     <div class="bottom-nav-inner">
-      ${navigation_items.map((item) => `
+      ${navigationItems.map((item) => `
         <a class="nav-item ${page === item.key ? "active" : ""} ${item.key === "urgent" ? "urgent-nav" : ""}"
            href="${item.href}"
            ${page === item.key ? 'aria-current="page"' : ""}>
-          ${geticon(item.icon)}
+          ${getIcon(item.icon)}
           <span>${_translate(`nav.${item.key}`)}</span>
         </a>
       `).join("")}
@@ -137,21 +137,21 @@ function display_navigation() {
 }
 
 //Main function to use for display common areas
-export function display_common_sections() {
-  display_common_header();
-  display_privacy_banner();
-  display_navigation();
-  apply_translations();
+export function displayCommonSections() {
+  displayCommonHeader();
+  displayPrivacyBanner();
+  displayNavigation();
+  applyTranslations();
 }
 
 //Setup page
 export async function setup_page() {
   document.documentElement.lang = current_lang === "mi" ? "mi" : "en";
-  display_common_sections();
+  displayCommonSections();
 }
 
 //Display results count text for each language
-export function display_result_count_text(count) {
+export function displayResultCountText(count) {
   if (count === 0) return _translate("results.none");
   if (count === 1) return _translate("results.one");
   return _translate("results.showing", { count: String(count) });

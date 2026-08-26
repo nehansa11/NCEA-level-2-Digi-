@@ -1,15 +1,15 @@
 
-import { setup_page, _translate, display_result_count_text, geticon } from "./common.js";
+import { setup_page, _translate, displayResultCountText, getIcon } from "./common.js";
 import {
-  load_json_services,
-  get_app_main_categories,
-  get_main_cat_icon,
-  display_cat_translated_label,
-  search_filter_services,
-  app_service_card,
-  info_content
+  loadJsonServices,
+  getAppMainCategories,
+  getMainCatIcon,
+  displayCatTranslatedLabel,
+  searchFilterServices,
+  appServiceCard,
+  infoContent
 } from "./services.js";
-import { browser_location, attach_distances, sort_by_distance } from "./location.js";
+import { browserLocation, attachDistances, sortByDistance } from "./location.js";
 
 let allServices = [];
 let selectedCategory = new URLSearchParams(window.location.search).get("category") || "all";
@@ -19,7 +19,7 @@ let infoWindow = null;
 let markers = [];
 let userMarker = null;
 
-function display_google_maps() {
+function displayGoogleMaps() {
   return new Promise((resolve, reject) => {
     if (window.google?.maps) {
       resolve(window.google.maps);
@@ -41,8 +41,8 @@ function display_google_maps() {
   });
 }
 
-function display_filters() {
-  const categories = get_app_main_categories();
+function displayFilters() {
+  const categories = getAppMainCategories();
   const container = document.getElementById("map-category-filters");
 
   container.innerHTML = [
@@ -51,8 +51,8 @@ function display_filters() {
       <button class="filter-chip category-filter-${category.toLowerCase()} ${selectedCategory.toLowerCase() === category.toLowerCase() ? "active" : ""}"
               type="button"
               data-category="${encodeURIComponent(category)}">
-        ${geticon(get_main_cat_icon(category))}
-        <span>${display_cat_translated_label(category)}</span>
+        ${getIcon(getMainCatIcon(category))}
+        <span>${displayCatTranslatedLabel(category)}</span>
       </button>
     `)
   ].join("");
@@ -64,34 +64,34 @@ function display_filters() {
       if (selectedCategory === "all") url.searchParams.delete("category");
       else url.searchParams.set("category", selectedCategory);
       history.replaceState({}, "", url);
-      display_filters();
-      display_all();
+      displayFilters();
+      displayAll();
     });
   });
 }
 
-function get_visible_services() {
-  let services = search_filter_services(allServices, "", selectedCategory);
-  if (userLocation) services = sort_by_distance(attach_distances(services, userLocation));
+function getVisibleServices() {
+  let services = searchFilterServices(allServices, "", selectedCategory);
+  if (userLocation) services = sortByDistance(attachDistances(services, userLocation));
   return services;
 }
 
-function display_list(services) {
-  document.getElementById("map-result-count").textContent = display_result_count_text(services.length);
+function displayList(services) {
+  document.getElementById("map-result-count").textContent = displayResultCountText(services.length);
   document.getElementById("map-service-list").innerHTML = services.length
-    ? services.map((service) => app_service_card(service, service.distanceKm)).join("")
+    ? services.map((service) => appServiceCard(service, service.distanceKm)).join("")
     : `<div class="empty-state">${_translate("results.none")}</div>`;
 }
 
 //clear map marks
-function clear_markers() {
+function clearMarkers() {
   markers.forEach((marker) => marker.setMap(null));
   markers = [];
 }
 
-function set_map_markers(services) {
+function setMapMarkers(services) {
   if (!map || !window.google?.maps) return;
-  clear_markers();
+  clearMarkers();
 
   const bounds = new google.maps.LatLngBounds();
 
@@ -105,7 +105,7 @@ function set_map_markers(services) {
     });
 
     marker.addListener("click", () => {
-      infoWindow.setContent(info_content(service, service.distanceKm));
+      infoWindow.setContent(infoContent(service, service.distanceKm));
       infoWindow.open({ map, anchor: marker });
     });
 
@@ -123,19 +123,19 @@ function set_map_markers(services) {
   }
 }
 
-function display_all() {
-  const services = get_visible_services();
-  display_list(services);
-  set_map_markers(services);
+function displayAll() {
+  const services = getVisibleServices();
+  displayList(services);
+  setMapMarkers(services);
 }
 
 //request user to share location
-async function request_user_location() {
+async function requestUserLocation() {
   const status = document.getElementById("location-status");
   status.textContent = _translate("location.requesting");
 
   try {
-    userLocation = await browser_location();
+    userLocation = await browserLocation();
     status.textContent = _translate("location.allowed");
 
     if (map && window.google?.maps) {
@@ -159,13 +159,13 @@ async function request_user_location() {
       error.message === "DENIED" ? _translate("location.denied") : _translate("location.unavailable");
   }
 
-  display_all();
+  displayAll();
 }
 
-async function setup_map() {
+async function setupMap() {
   const mapElement = document.getElementById("map");
   try {
-    await display_google_maps();
+    await displayGoogleMaps();
     map = new google.maps.Map(mapElement, {
       center: { lat: -41.0, lng: 174.8 },
       zoom: 5,
@@ -174,7 +174,7 @@ async function setup_map() {
       fullscreenControl: false
     });
     infoWindow = new google.maps.InfoWindow();
-    display_all();
+    displayAll();
   } catch (error) {
     mapElement.innerHTML = `<div class="map-placeholder">${error.message}</div>`;
   }
@@ -182,16 +182,16 @@ async function setup_map() {
 
 async function start() {
   await setup_page();
-  allServices = await load_json_services();
-  display_filters();
-  display_all();
-  await setup_map();
+  allServices = await loadJsonServices();
+  displayFilters();
+  displayAll();
+  await setupMap();
 
-  request_user_location();
+  requestUserLocation();
 
   document.addEventListener("languagechange", () => {
-    display_filters();
-    display_all();
+    displayFilters();
+    displayAll();
   });
 }
 

@@ -1,9 +1,9 @@
-import { geticon, _translate } from "./common.js";//importing common file
+import { getIcon, _translate } from "./common.js";//importing common file
 
 export const APP_MAIN_CATS = ["Food", "Housing", "Budgeting", "Counselling"];
 
 //Get services fron the json
-export async function load_json_services() {
+export async function loadJsonServices() {
   const response = await fetch("assets/data/services.json");
 
   if (!response.ok) {
@@ -23,11 +23,11 @@ export async function load_json_services() {
 }
 
 //Common function used to get the defined main categories
-export function get_app_main_categories() {
+export function getAppMainCategories() {
   return APP_MAIN_CATS;
 }
 
-export function get_main_cat_icon(category) {
+export function getMainCatIcon(category) {
   const icons = {
     Food: "food",
     Housing: "housing",
@@ -38,7 +38,7 @@ export function get_main_cat_icon(category) {
   return icons[category] || "counselling";
 }
 
-export function display_cat_translated_label(category) {
+export function displayCatTranslatedLabel(category) {
   const keys = {
     Food: "category.food",
     Housing: "category.housing",
@@ -49,7 +49,7 @@ export function display_cat_translated_label(category) {
 }
 
 //Used for search filtering services
-export function search_filter_services(services, query, selectedCategory) {
+export function searchFilterServices(services, query, selectedCategory) {
   const search = String(query || "").trim().toLowerCase();
 
   return services.filter((service) => {
@@ -77,7 +77,7 @@ export function search_filter_services(services, query, selectedCategory) {
 }
 
 //Common display for distance
-function display_distance(distanceKm) {
+function displayDistance(distanceKm) {
   if (Number.isFinite(distanceKm)) {
     if (distanceKm < 1) {
       return `<span class="service-distance">${Math.round(distanceKm * 1000)} m away</span>`;
@@ -89,7 +89,7 @@ function display_distance(distanceKm) {
 }
 
 //Used to display common service card
-export function app_service_card(service, distanceKm) {
+export function appServiceCard(service, distanceKm) {
   const category = service.Category || "Counselling";
   const phone = service.Phone || "";
   const tel = phone;
@@ -106,23 +106,23 @@ export function app_service_card(service, distanceKm) {
     <article class="service-card" id="card-${service.id}" data-service-id="${service.id}">
       <div class="service-topline">
         <span class="category-badge category-badge-with-icon category-${category.toLowerCase()}">
-          ${geticon(get_main_cat_icon(category))}
-          ${display_cat_translated_label(category)}
+          ${getIcon(getMainCatIcon(category))}
+          ${displayCatTranslatedLabel(category)}
         </span>
-        ${display_distance(distanceKm)}
+        ${displayDistance(distanceKm)}
       </div>
 
-      <h1>${convert_to_html(service["Organisation Name"] || "Service")}</h1>
+      <h1>${convertToHtml(service["Organisation Name"] || "Service")}</h1>
 
       <p class="service-meta service-address">
-        ${geticon("pin")}
-        ${convert_to_html(service.Address || service["Area/Suburb"] || "")}
+        ${getIcon("pin")}
+        ${convertToHtml(service.Address || service["Area/Suburb"] || "")}
       </p>
 
       ${service.Website ? `
-        <a class="service-website" href="${convert_to_html(service.Website)}"
+        <a class="service-website" href="${convertToHtml(service.Website)}"
            target="_blank" rel="noopener noreferrer">
-          ${geticon("external")}
+          ${getIcon("external")}
           <span>${_translate("service.website")}</span>
         </a>` : ""}
 
@@ -133,14 +133,14 @@ export function app_service_card(service, distanceKm) {
       </div>
 
       <p class="service-meta service-description">
-        ${convert_to_html(service["Services Offered"] || "No referral needed")}
+        ${convertToHtml(service["Services Offered"] || "No referral needed")}
       </p>
 
       ${tel ? `
         <div class="service-call-row">
           <a class="call-button compact-call-button" href="tel:${tel}">
-            ${geticon("phone")}
-            <span>${convert_to_html(phone)}</span>
+            ${getIcon("phone")}
+            <span>${convertToHtml(phone)}</span>
           </a>
         </div>` : ""}
     </article>
@@ -148,7 +148,7 @@ export function app_service_card(service, distanceKm) {
 }
 
 //Information content generate
-export function info_content(service, distanceKm) {
+export function infoContent(service, distanceKm) {
   const phone = service.Phone || "";
   const tel = phone;
   const distance = Number.isFinite(distanceKm)
@@ -157,18 +157,18 @@ export function info_content(service, distanceKm) {
 
   return `
     <div class="info-window">
-      <h1>${convert_to_html(service["Organisation Name"] || "Service")}</h1>
-      <p>${convert_to_html(service.Address || "")}</p>
-      <p>${convert_to_html(display_cat_translated_label(service.Category))}</p>
-      <p><strong>${convert_to_html(distance)}</strong></p>
-      ${tel ? `<p><a href="tel:${tel}">${_translate("service.call")} ${convert_to_html(phone)}</a></p>` : ""}
-      ${service.Website ? `<p><a href="${convert_to_html(service.Website)}" target="_blank" rel="noopener noreferrer">${_translate("service.website")}</a></p>` : ""}
+      <h1>${convertToHtml(service["Organisation Name"] || "Service")}</h1>
+      <p>${convertToHtml(service.Address || "")}</p>
+      <p>${convertToHtml(displayCatTranslatedLabel(service.Category))}</p>
+      <p><strong>${convertToHtml(distance)}</strong></p>
+      ${tel ? `<p><a href="tel:${tel}">${_translate("service.call")} ${convertToHtml(phone)}</a></p>` : ""}
+      ${service.Website ? `<p><a href="${convertToHtml(service.Website)}" target="_blank" rel="noopener noreferrer">${_translate("service.website")}</a></p>` : ""}
     </div>
   `;
 }
 
 //Convert to html friendly charactors
-function convert_to_html(value) {
+function convertToHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
