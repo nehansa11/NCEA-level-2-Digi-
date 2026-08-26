@@ -1,4 +1,5 @@
-export function getBrowserLocation(options = {}) {
+//Identify the location of the browser
+export function browser_location(options = {}) {
   return new Promise((resolve, reject) => {
     if (!("geolocation" in navigator)) {
       reject(new Error("UNSUPPORTED"));
@@ -28,7 +29,9 @@ export function getBrowserLocation(options = {}) {
     );
   });
 }
-export function distanceKm(pointA, pointB) {
+
+//Function to calc distance in km
+export function calc_distance(pointA, pointB) {
   if (!pointA || !pointB) return NaN;
   const lat1 = Number(pointA.lat);
   const lng1 = Number(pointA.lng);
@@ -50,13 +53,15 @@ export function distanceKm(pointA, pointB) {
   return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-export function attachDistances(services, userLocation) {
+//Attaching user location
+export function attach_distances(services, userLocation) {
   return services.map((service) => ({
     ...service,
-    distanceKm: distanceKm(userLocation, { lat: service.lat, lng: service.lng })
+    distanceKm: calc_distance(userLocation, { lat: service.lat, lng: service.lng })
   }));
 }
 
+//@TODO DEL
 export function sortByDistance(services) {
   return [...services].sort((a, b) => {
     const aDistance = Number.isFinite(a.distanceKm) ? a.distanceKm : Number.POSITIVE_INFINITY;

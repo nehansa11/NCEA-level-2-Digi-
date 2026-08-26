@@ -1,4 +1,4 @@
 
-import { initializePage } from "./common.js";
+import { setup_page } from "./common.js";
 
-initializePage();
+setup_page();

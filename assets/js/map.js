@@ -1,15 +1,15 @@
 
-import { initializePage, t, resultCountText, icon } from "./common.js";
+import { setup_page, _translate, display_result_count_text, geticon } from "./common.js";
 import {
-  loadServices,
-  getMainCategories,
-  getCategoryIcon,
-  getCategoryLabel,
-  filterServices,
-  createServiceCard,
-  createInfoWindowContent
+  load_json_services,
+  get_app_main_categories,
+  get_main_cat_icon,
+  display_cat_translated_label,
+  search_filter_services,
+  app_service_card,
+  info_content
 } from "./services.js";
-import { getBrowserLocation, attachDistances, sortByDistance } from "./location.js";
+import { browser_location, attach_distances, sortByDistance } from "./location.js";
 
 let allServices = [];
 let selectedCategory = new URLSearchParams(window.location.search).get("category") || "all";
@@ -19,7 +19,7 @@ let infoWindow = null;
 let markers = [];
 let userMarker = null;
 
-function loadGoogleMaps() {
+function display_google_maps() {
   return new Promise((resolve, reject) => {
     if (window.google?.maps) {
       resolve(window.google.maps);
@@ -41,18 +41,18 @@ function loadGoogleMaps() {
   });
 }
 
-function renderFilters() {
-  const categories = getMainCategories();
+function display_filters() {
+  const categories = get_app_main_categories();
   const container = document.getElementById("map-category-filters");
 
   container.innerHTML = [
-    `<button class="filter-chip ${selectedCategory === "all" ? "active" : ""}" type="button" data-category="all">${t("filter.all")}</button>`,
+    `<button class="filter-chip ${selectedCategory === "all" ? "active" : ""}" type="button" data-category="all">${_translate("filter.all")}</button>`,
     ...categories.map((category) => `
       <button class="filter-chip category-filter-${category.toLowerCase()} ${selectedCategory.toLowerCase() === category.toLowerCase() ? "active" : ""}"
               type="button"
               data-category="${encodeURIComponent(category)}">
-        ${icon(getCategoryIcon(category))}
-        <span>${getCategoryLabel(category)}</span>
+        ${geticon(get_main_cat_icon(category))}
+        <span>${display_cat_translated_label(category)}</span>
       </button>
     `)
   ].join("");
@@ -64,33 +64,34 @@ function renderFilters() {
       if (selectedCategory === "all") url.searchParams.delete("category");
       else url.searchParams.set("category", selectedCategory);
       history.replaceState({}, "", url);
-      renderFilters();
-      renderAll();
+      display_filters();
+      display_all();
     });
   });
 }
 
-function visibleServices() {
-  let services = filterServices(allServices, "", selectedCategory);
-  if (userLocation) services = sortByDistance(attachDistances(services, userLocation));
+function get_visible_services() {
+  let services = search_filter_services(allServices, "", selectedCategory);
+  if (userLocation) services = sortByDistance(attach_distances(services, userLocation));
   return services;
 }
 
-function renderList(services) {
-  document.getElementById("map-result-count").textContent = resultCountText(services.length);
+function display_list(services) {
+  document.getElementById("map-result-count").textContent = display_result_count_text(services.length);
   document.getElementById("map-service-list").innerHTML = services.length
-    ? services.map((service) => createServiceCard(service, service.distanceKm)).join("")
-    : `<div class="empty-state">${t("results.none")}</div>`;
+    ? services.map((service) => app_service_card(service, service.distanceKm)).join("")
+    : `<div class="empty-state">${_translate("results.none")}</div>`;
 }
 
-function clearMarkers() {
+//clear map marks
+function clear_markers() {
   markers.forEach((marker) => marker.setMap(null));
   markers = [];
 }
 
-function renderMarkers(services) {
+function set_map_markers(services) {
   if (!map || !window.google?.maps) return;
-  clearMarkers();
+  clear_markers();
 
   const bounds = new google.maps.LatLngBounds();
 
@@ -104,7 +105,7 @@ function renderMarkers(services) {
     });
 
     marker.addListener("click", () => {
-      infoWindow.setContent(createInfoWindowContent(service, service.distanceKm));
+      infoWindow.setContent(info_content(service, service.distanceKm));
       infoWindow.open({ map, anchor: marker });
     });
 
@@ -122,19 +123,20 @@ function renderMarkers(services) {
   }
 }
 
-function renderAll() {
-  const services = visibleServices();
-  renderList(services);
-  renderMarkers(services);
+function display_all() {
+  const services = get_visible_services();
+  display_list(services);
+  set_map_markers(services);
 }
 
-async function requestLocation() {
+//request user to share location
+async function request_user_location() {
   const status = document.getElementById("location-status");
-  status.textContent = t("location.requesting");
+  status.textContent = _translate("location.requesting");
 
   try {
-    userLocation = await getBrowserLocation();
-    status.textContent = t("location.allowed");
+    userLocation = await browser_location();
+    status.textContent = _translate("location.allowed");
 
     if (map && window.google?.maps) {
       userMarker?.setMap(null);
@@ -154,16 +156,16 @@ async function requestLocation() {
     }
   } catch (error) {
     status.textContent =
-      error.message === "DENIED" ? t("location.denied") : t("location.unavailable");
+      error.message === "DENIED" ? _translate("location.denied") : _translate("location.unavailable");
   }
 
-  renderAll();
+  display_all();
 }
 
-async function initialiseMap() {
+async function setup_map() {
   const mapElement = document.getElementById("map");
   try {
-    await loadGoogleMaps();
+    await display_google_maps();
     map = new google.maps.Map(mapElement, {
       center: { lat: -41.0, lng: 174.8 },
       zoom: 5,
@@ -172,24 +174,24 @@ async function initialiseMap() {
       fullscreenControl: false
     });
     infoWindow = new google.maps.InfoWindow();
-    renderAll();
+    display_all();
   } catch (error) {
     mapElement.innerHTML = `<div class="map-placeholder">${error.message}</div>`;
   }
 }
 
 async function start() {
-  await initializePage();
-  allServices = await loadServices();
-  renderFilters();
-  renderAll();
-  await initialiseMap();
+  await setup_page();
+  allServices = await load_json_services();
+  display_filters();
+  display_all();
+  await setup_map();
 
-  requestLocation();
+  request_user_location();
 
   document.addEventListener("languagechange", () => {
-    renderFilters();
-    renderAll();
+    display_filters();
+    display_all();
   });
 }
 

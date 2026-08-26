@@ -1,7 +1,9 @@
-import { initializePage, icon, getLanguage, t } from "./common.js";
+import { setup_page, geticon, getlanguage, _translate } from "./common.js";
 import { learnTopics } from "./translations.js";
 
-const quizQuestions = [
+//My app quiz questions.
+//easy to  add more if need
+const quiz_questions = [
    {
     question: { en: "Many community organisations offer their support for free.", mi: "" },
     answers: { en: ["Yes", "No"], mi: ["Āe", "Kāo"] },
@@ -34,12 +36,13 @@ const quizQuestions = [
   }
 ];
 
-let currentQuestion = 0;
-let correctAnswers = 0;
-let answeredQuestions = 0;
+let current_question = 0;
+let correct_answers = 0;
+let answered_questions = 0;
 
-function renderAccordion() {
-  const language = getLanguage();
+//display acordian
+function display_accordion() {
+  const language = getlanguage();
   const container = document.getElementById("learn-accordion");
 
   container.innerHTML = learnTopics.map((topic, index) => `
@@ -50,7 +53,7 @@ function renderAccordion() {
           <h2>${topic.title[language] || topic.title.en}</h2>
           <p>${topic.summary[language] || topic.summary.en}</p>
         </div>
-        ${icon(index === 0 ? "chevron-up" : "chevron-down")}
+        ${geticon(index === 0 ? "chevron-up" : "chevron-down")}
       </div>
 
       <div class="learn-detail">
@@ -78,31 +81,35 @@ function renderAccordion() {
     });
   });
 }
-function startQuiz() {
-  currentQuestion = 0;
-  correctAnswers = 0;
-  answeredQuestions = 0;
+
+//Function to start the quiz
+function start_quiz() {
+  current_question = 0;
+  correct_answers = 0;
+  answered_questions = 0;
 
   document.getElementById("quiz-start-card").hidden = true;
   document.getElementById("quiz-panel").hidden = false;
   document.getElementById("quiz-result").hidden = true;
   document.getElementById("quiz-question-area").hidden = false;
 
-  showQuestion();
+  show_question();
 }
 
-function closeQuiz() {
+//Close button function of the quiz
+function close_quiz() {
   document.getElementById("quiz-panel").hidden = true;
   document.getElementById("quiz-start-card").hidden = false;
 }
 
-function showQuestion() {
-  const language = getLanguage();
-  const question = quizQuestions[currentQuestion];
+//Show the question here
+function show_question() {
+  const language = getlanguage();
+  const question = quiz_questions[current_question];
   const questionArea = document.getElementById("quiz-question-area");
 
   document.getElementById("quiz-progress").textContent =
-    `${currentQuestion + 1} / ${quizQuestions.length}`;
+    `${current_question + 1} / ${quiz_questions.length}`;
 
   questionArea.innerHTML = `
     <article class="quiz-question-card">
@@ -117,22 +124,23 @@ function showQuestion() {
       </div>
 
       <button id="next-question-button" class="quiz-next-button" type="button" hidden>
-        ${currentQuestion === quizQuestions.length - 1
-          ? t("learn.showResult")
-          : t("learn.nextQuestion")}
+        ${current_question === quiz_questions.length - 1
+          ? _translate("learn.display_results")
+          : _translate("learn.nextQuestion")}
       </button>
     </article>
   `;
 
   questionArea.querySelectorAll(".quiz-answer-button").forEach((button) => {
-    button.addEventListener("click", chooseAnswer);
+    button.addEventListener("click", choose_answer);
   });
 }
 
-function chooseAnswer(event) {
+//setup answers here
+function choose_answer(event) {
   const selectedButton = event.currentTarget;
   const selectedAnswer = Number(selectedButton.dataset.answer);
-  const question = quizQuestions[currentQuestion];
+  const question = quiz_questions[current_question];
   const answerButtons = document.querySelectorAll(".quiz-answer-button");
 
   answerButtons.forEach((button) => {
@@ -141,54 +149,55 @@ function chooseAnswer(event) {
 
   if (selectedAnswer === question.correctAnswer) {
     selectedButton.classList.add("correct-answer");
-    correctAnswers += 1;
+    correct_answers += 1;
   } else {
     selectedButton.classList.add("wrong-answer");
     answerButtons[question.correctAnswer].classList.add("correct-answer");
   }
 
-  answeredQuestions += 1;
+  answered_questions += 1;
 
   const nextButton = document.getElementById("next-question-button");
   nextButton.hidden = false;
-  nextButton.addEventListener("click", goToNextQuestion);
+  nextButton.addEventListener("click", go_to_next_question);
 }
 
-function goToNextQuestion() {
-  currentQuestion += 1;
+//nav to next question
+function go_to_next_question() {
+  current_question += 1;
 
-  if (currentQuestion < quizQuestions.length) {
-    showQuestion();
+  if (current_question < quiz_questions.length) {
+    show_question();
   } else {
-    showResult();
+    display_results();
   }
 }
 
-function showResult() {
+function display_results() {
   document.getElementById("quiz-question-area").hidden = true;
   document.getElementById("quiz-result").hidden = false;
 
   document.getElementById("quiz-score").textContent =
-    `${correctAnswers} ${t("learn.outOf")} ${quizQuestions.length}`;
+    `${correct_answers} ${_translate("learn.outOf")} ${quiz_questions.length}`;
 }
 
 async function start() {
-  await initializePage();
+  await setup_page();
 
-  renderAccordion();
+  display_accordion();
 
-  document.getElementById("start-quiz-button").addEventListener("click", startQuiz);
-  document.getElementById("close-quiz-button").addEventListener("click", closeQuiz);
-  document.getElementById("restart-quiz-button").addEventListener("click", startQuiz);
+  document.getElementById("start-quiz-button").addEventListener("click", start_quiz);
+  document.getElementById("close-quiz-button").addEventListener("click", close_quiz);
+  document.getElementById("restart-quiz-button").addEventListener("click", start_quiz);
 
   document.addEventListener("languagechange", () => {
-    renderAccordion();
+    display_accordion();
 
     if (!document.getElementById("quiz-panel").hidden) {
-      if (currentQuestion < quizQuestions.length) {
-        showQuestion();
+      if (current_question < quiz_questions.length) {
+        show_question();
       } else {
-        showResult();
+        display_results();
       }
     }
   });
