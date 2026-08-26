@@ -1,6 +1,5 @@
 
 import { initializePage, t, resultCountText, icon } from "./common.js";
-import { APP_CONFIG } from "./config.js";
 import {
   loadServices,
   getMainCategories,
@@ -27,11 +26,6 @@ function loadGoogleMaps() {
       return;
     }
 
-    if (!APP_CONFIG.googleMapsApiKey) {
-      reject(new Error("Google Maps API key required."));
-      return;
-    }
-
     const callbackName = `initGoogleMaps_${Date.now()}`;
     window[callbackName] = () => {
       delete window[callbackName];
@@ -39,10 +33,10 @@ function loadGoogleMaps() {
     };
 
     const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(APP_CONFIG.googleMapsApiKey)}&callback=${callbackName}`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAUNz5T2bEf8-99YeQ4iBB7EkKAIMPU9C0&callback=${callbackName}`;
     script.async = true;
     script.defer = true;
-    script.onerror = () => reject(new Error("Error loading Google Maps."));
+    script.onerror = () => reject(new Error("Google Maps could not be loaded."));
     document.head.appendChild(script);
   });
 }
@@ -112,11 +106,6 @@ function renderMarkers(services) {
     marker.addListener("click", () => {
       infoWindow.setContent(createInfoWindowContent(service, service.distanceKm));
       infoWindow.open({ map, anchor: marker });
-
-      document.querySelectorAll(".service-card").forEach((card) => card.classList.remove("highlighted"));
-      const card = document.getElementById(`card-${service.id}`);
-      card?.classList.add("highlighted");
-      card?.scrollIntoView({ behavior: "smooth", block: "center" });
     });
 
     markers.push(marker);
@@ -176,8 +165,8 @@ async function initialiseMap() {
   try {
     await loadGoogleMaps();
     map = new google.maps.Map(mapElement, {
-      center: APP_CONFIG.defaultMapCenter,
-      zoom: APP_CONFIG.defaultMapZoom,
+      center: { lat: -41.0, lng: 174.8 },
+      zoom: 5,
       mapTypeControl: true,
       streetViewControl: false,
       fullscreenControl: false

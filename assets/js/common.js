@@ -1,6 +1,5 @@
 
 import { translations } from "./translations.js";
-import { APP_CONFIG } from "./config.js";
 
 const PAGE_CONFIG = {
   home: { icon: "home" },
@@ -22,7 +21,7 @@ let currentLanguage = localStorage.getItem("appLanguage") || "en";
 if (!translations[currentLanguage]) currentLanguage = "en";
 
 export function icon(name, className = "icon") {
-  return `<img class="${className}" src="assets/icons/${name}.svg" alt="" aria-hidden="true">`;
+  return `<img class="${className}" src="assets/icons/${name}.svg" alt="${name}">`;
 }
 
 export function getLanguage() {
@@ -138,17 +137,8 @@ export async function initializePage() {
   renderSharedLayout();
 }
 
-export function createCategorySlug(category) {
-  return String(category)
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
-
 export function destinationForCategory(category) {
-  const page = APP_CONFIG.categoryDestination === "map" ? "map.html" : "find.html";
+  const page = "find.html";
   return `${page}?category=${encodeURIComponent(category)}`;
 }
 

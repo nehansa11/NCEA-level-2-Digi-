@@ -1,7 +1,5 @@
 import { initializePage, destinationForCategory, icon } from "./common.js";
 import { getMainCategories, getCategoryIcon, getCategoryLabel } from "./services.js";
-import { APP_CONFIG } from "./config.js";
-
 
 function showCategories() {
   const container = document.getElementById("home-categories");
@@ -26,7 +24,7 @@ async function start() {
   showCategories();
 
   document.getElementById("find-help-button").addEventListener("click", () => {
-    window.location.href = APP_CONFIG.categoryDestination === "map" ? "map.html" : "find.html";
+    window.location.href = "find.html";
   });
 
   document.addEventListener("languagechange", showCategories);

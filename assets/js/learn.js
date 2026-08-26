@@ -1,10 +1,9 @@
 import { initializePage, icon, getLanguage, t } from "./common.js";
 import { learnTopics } from "./translations.js";
 
-
 const quizQuestions = [
    {
-    question: { en: "Many community organisations offer their support for free.", mi: "" }, // TODO: get checked
+    question: { en: "Many community organisations offer their support for free.", mi: "" },
     answers: { en: ["Yes", "No"], mi: ["Āe", "Kāo"] },
     correctAnswer: 0,
   },
@@ -79,7 +78,6 @@ function renderAccordion() {
     });
   });
 }
-
 function startQuiz() {
   currentQuestion = 0;
   correctAnswers = 0;

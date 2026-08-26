@@ -8,7 +8,6 @@ let allServices = [];
 let selectedCategory = new URLSearchParams(window.location.search).get("category") || "all";
 let query = "";
 let userLocation = null;
-
 function renderFilters() {
   const categories = getMainCategories();
   const container = document.getElementById("find-category-filters");
@@ -37,13 +36,11 @@ function renderFilters() {
     });
   });
 }
-
 function getVisibleServices() {
   let services = filterServices(allServices, query, selectedCategory);
   if (userLocation) services = sortByDistance(attachDistances(services, userLocation));
   return services;
 }
-
 function renderResults() {
   const services = getVisibleServices();
   document.getElementById("find-result-count").textContent = resultCountText(services.length);

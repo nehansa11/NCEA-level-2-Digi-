@@ -1,5 +1,4 @@
 import { icon, t } from "./common.js";
-import { APP_CONFIG } from "./config.js";
 
 export const MAIN_CATEGORIES = ["Food", "Housing", "Budgeting", "Counselling"];
 
@@ -74,14 +73,6 @@ export function filterServices(services, query, selectedCategory) {
   });
 }
 
-export function toTel(phone) {
-  const digits = String(phone || "").replace(/[^\d+]/g, "");
-  if (!digits) return "";
-  if (digits.startsWith("+")) return digits;
-  if (digits.startsWith("0")) return digits;
-  return digits;
-}
-
 function distanceDisplay(distanceKm) {
   if (Number.isFinite(distanceKm)) {
     if (distanceKm < 1) {
@@ -96,11 +87,15 @@ function distanceDisplay(distanceKm) {
 export function createServiceCard(service, distanceKm) {
   const category = service.Category || "Counselling";
   const phone = service.Phone || "";
-  const tel = toTel(phone);
+  const tel = phone;
   const lastUpdated = "";
 
+  const reportSubject = encodeURIComponent(
+    `Outdated service information: ${service["Organisation Name"]}`
+  );
+
   const reportHref =
-    `mailto:nehansawijewardana@gmail.com?subject=Report outdated services`;
+    `mailto:nehansawijewardana@gmail.com?subject=${reportSubject}`;
 
   return `
     <article class="service-card" id="card-${service.id}" data-service-id="${service.id}">
@@ -130,8 +125,6 @@ export function createServiceCard(service, distanceKm) {
         <a class="report-link compact-report-link" href="${reportHref}">
           ${t("service.report")}
         </a>
-
-        <div class="last-updated">${escapeHtml(lastUpdated)}</div>
       </div>
 
       <p class="service-meta service-description">
@@ -151,7 +144,7 @@ export function createServiceCard(service, distanceKm) {
 
 export function createInfoWindowContent(service, distanceKm) {
   const phone = service.Phone || "";
-  const tel = toTel(phone);
+  const tel = phone;
   const distance = Number.isFinite(distanceKm)
     ? (distanceKm < 1 ? `${Math.round(distanceKm * 1000)} m` : `${distanceKm.toFixed(1)} km`)
     : t("location.distancePrompt");

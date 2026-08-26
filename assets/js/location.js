@@ -1,4 +1,3 @@
-
 export function getBrowserLocation(options = {}) {
   return new Promise((resolve, reject) => {
     if (!("geolocation" in navigator)) {
@@ -29,7 +28,6 @@ export function getBrowserLocation(options = {}) {
     );
   });
 }
-
 export function distanceKm(pointA, pointB) {
   if (!pointA || !pointB) return NaN;
   const lat1 = Number(pointA.lat);
